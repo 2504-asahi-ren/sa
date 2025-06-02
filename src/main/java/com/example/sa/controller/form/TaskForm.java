@@ -13,12 +13,12 @@ public class TaskForm {
 
     private String content;
 
-    private  int status;
+    private int status;
 
     private Date  limit_date;
 
-    private  Date created_date;
+    private Date created_date;
 
-    private  Date updated_date;
+    private Date updated_date;
 
 }

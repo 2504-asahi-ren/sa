@@ -20,11 +20,8 @@
                 <label>
                     期限 : <input type="date" value="${start}">～<input type="date" value="${end}">
                     ステータス :
-                    <select name="status">
-                        <option>未着手</option>
-                        <option>実行中</option>
-                        <option>ステイ中</option>
-                        <option>完了</option>
+                    <select class="dropdown">
+                        <option th:each="item : ${selectStatus}" th:text="${item.value}"></option>
                     </select>
                     タスク内容 : <input type="text" name="content">
                     <input type="submit" value="絞込">
@@ -36,13 +33,21 @@
                 タスク内容 : <span th:text="${task.content}"></span>
             </div>
             <div class="status">
-                ステータス : <span th:text="${task.status}"></span>
+                <label>ステータス
+                    <select class="dropdown">
+                        <option th:each="item : ${selectStatus}"
+                                th:value="${task.status}"
+                                th:text="${item.value}"
+                                th:selected="${item.key == task.status}">
+                        </option>
+                    </select>
+                </label>
             </div>
             <div class="change-status">
                 <input type="button" value="変更">
             </div>
             <div class="limit-date">
-                タスク期限 : <span th:text="${task.limit_date}"></span>
+                タスク期限 : <span th:text="${#dates.format(task.limit_date, 'yyyy/MM/dd')}"></span>
             </div>
             <div class="edit">
                 <a th:href="@{/edit/{id}(id=${task.id})}">
