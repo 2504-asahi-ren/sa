@@ -24,7 +24,7 @@ public class Task {
     private int status;
 
     @Column(name = "limit_date")
-    private Date LimitDate;
+    private Date limitDate;
 
     @Column(name = "created_date",insertable = false,updatable = false)
     private Date CreatedDate;

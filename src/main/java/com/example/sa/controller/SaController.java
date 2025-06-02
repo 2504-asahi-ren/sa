@@ -5,9 +5,9 @@ import com.example.sa.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +29,7 @@ public class SaController {
         List<TaskForm> contentData = taskService.findAllTask();
 
         mav.addObject("tasks", contentData);
+        mav.addObject("today", new Date());
         mav.addObject("selectStatus", getSelectStatus());
         mav.setViewName("/top");
 

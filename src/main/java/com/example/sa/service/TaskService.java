@@ -7,7 +7,6 @@ import com.example.sa.repository.entity.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +22,7 @@ public class TaskService {
      */
     public List<TaskForm> findAllTask() {
 
-        List<Task> results = taskRepository.findAll();
+        List<Task> results = taskRepository.findAllByOrderByLimitDateAsc();
         List<TaskForm> tasks = setTaskForm(results);
         return tasks;
     }
@@ -45,5 +44,6 @@ public class TaskService {
         }
         return tasks;
     }
+
 
 }
