@@ -21,14 +21,14 @@ public class Task {
     private String content;
 
     @Column
-    private  int status;
+    private int status;
 
     @Column(name = "limit_date")
     private Date limitDate;
 
     @Column(name = "created_date",insertable = false,updatable = false)
-    private  Date createdDate;
+    private Date CreatedDate;
 
     @Column(name = "updated_date",insertable = false)
-    private  Date updatedDate;
+    private Date UpdatedDate;
 }
