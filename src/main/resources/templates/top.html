@@ -46,11 +46,11 @@
             <div class="change-status">
                 <input type="button" value="変更">
             </div>
-            <div class="limit-date"  th:if="${today ge task.limit_date}">
-                タスク期限 : <span th:text="${#dates.format(task.limit_date, 'yyyy/MM/dd')}" style="background-color:pink;"></span>
+            <div class="limit-date"  th:if="${today ge task.limitDate}">
+                タスク期限 : <span th:text="${#dates.format(task.limitDate, 'yyyy/MM/dd')}" style="background-color:pink;"></span>
             </div>
-            <div class="limit-date"  th:if="${today lt task.limit_date}">
-                タスク期限 : <span th:text="${#dates.format(task.limit_date, 'yyyy/MM/dd')}" style="background-color:yellow;"></span>
+            <div class="limit-date"  th:if="${today lt task.limitDate}">
+                タスク期限 : <span th:text="${#dates.format(task.limitDate, 'yyyy/MM/dd')}" style="background-color:yellow;"></span>
             </div>
             <div class="edit">
                 <a th:href="@{/edit/{id}(id=${task.id})}">
