@@ -3,6 +3,7 @@ package com.example.sa.repository.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -29,6 +30,6 @@ public class Task {
     @Column(name = "created_date",insertable = false,updatable = false)
     private Date CreatedDate;
 
-    @Column(name = "updated_date",insertable = false)
+    @Column(name = "updated_date",insertable = false,updatable = false)
     private Date UpdatedDate;
 }
