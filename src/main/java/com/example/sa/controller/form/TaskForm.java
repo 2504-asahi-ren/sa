@@ -1,10 +1,9 @@
 package com.example.sa.controller.form;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,7 +22,7 @@ public class TaskForm {
 
     private int status;
 
-    @NotNull(message = "期限を設定してください")
+    @NotBlank(message = "期限を設定してください")
     @FutureOrPresent(message = "無効な日付です")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date limitDate;

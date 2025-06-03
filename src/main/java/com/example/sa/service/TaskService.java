@@ -7,6 +7,7 @@ import com.example.sa.repository.entity.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,11 +58,30 @@ public class TaskService {
         taskRepository.save(saveTask);
     }
 
+    /*
+     * リクエストから取得した情報をEntityに設定
+     */
     private Task setTaskEntity(TaskForm reqTask) {
         Task task = new Task();
         task.setId(reqTask.getId());
         task.setContent(reqTask.getContent());
         task.setLimitDate(reqTask.getLimitDate());
+        return task;
+    }
+
+    /*
+     *レコード削除
+     */
+    public void deleteTask(Integer id) {
+        Task deleteTask = deleteTaskEntity(id);
+        taskRepository.delete(deleteTask);
+    }
+    /*
+     * リクエストから取得した情報をEntityに設定
+     */
+    private Task deleteTaskEntity(Integer id) {
+        Task task = new Task();
+        task.setId(id);
         return task;
     }
 }
