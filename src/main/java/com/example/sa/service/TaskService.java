@@ -21,9 +21,27 @@ public class TaskService {
     /*
      * 指定した日付のレコード全件取得処理
      */
-    public List<TaskForm> findAllTask() {
+    public List<TaskForm> findAllTask(String startDate,String endDate,Integer status,String content) {
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date start;
+        Date end;
+        try {
+            start = sdFormat.parse(startDate + " 00:00:00");
+            end = sdFormat.parse(endDate + " 23:59:59");
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        List<Task> results = new ArrayList<>();
+        if(status != null && content != null) {
+            results = taskRepository.findByLimitDateBetweenAndContentContainingAndStatusOrderByLimitDateAsc(start,end,content,status);
+        } else if (status == null && content != null) {
+            results = taskRepository.findByLimitDateBetweenAndContentContainingOrderByLimitDateAsc(start,end,content);
+        } else if (status != null && content == null) {
+            results = taskRepository.findByLimitDateBetweenAndStatusOrderByLimitDateAsc(start,end,status);
+        }else{
+            results = taskRepository.findByLimitDateBetweenOrderByLimitDateAsc(start,end);
+        }
 
-        List<Task> results = taskRepository.findAllByOrderByLimitDateAsc();
         List<TaskForm> tasks = setTaskForm(results);
         return tasks;
     }
