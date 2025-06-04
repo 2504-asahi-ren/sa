@@ -2,21 +2,18 @@ package com.example.sa.controller;
 
 import com.example.sa.controller.form.TaskForm;
 import com.example.sa.service.TaskService;
-import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-
-
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SaController {
@@ -42,9 +39,10 @@ public class SaController {
             errorMessage = session.getAttribute("error").toString();
             session.invalidate();
         }
+        Date date = new Date();
 
         mav.addObject("tasks", contentData);
-        mav.addObject("today", new Date());
+        mav.addObject("today", date);
         mav.addObject("selectStatus", getSelectStatus());
         mav.addObject("error", errorMessage);
         mav.setViewName("/top");
@@ -75,17 +73,20 @@ public class SaController {
         mav.addObject("taskForm", taskForm);
         return mav;
     }
-
     /*
-     * 新規投稿処理
+     * タスク追加処理
      */
     @PostMapping("/add")
-    public ModelAndView addContent(@ModelAttribute("taskForm") TaskForm taskForm) {
-        // 投稿をテーブルに格納
-
-        taskService.saveTask(taskForm);
-        // rootへリダイレクト
-        return new ModelAndView("redirect:/");
+    public ModelAndView addContent(@ModelAttribute("taskForm") @Validated TaskForm taskForm, BindingResult result) {
+        ModelAndView mav = new ModelAndView();
+        if (result.hasErrors()) {
+            mav.setViewName("/new");
+        }else {
+            // タスクをテーブルに格納
+            taskService.saveTask(taskForm);
+            return new ModelAndView("redirect:/");
+        }
+        return mav;
     }
 
     /*
@@ -94,14 +95,15 @@ public class SaController {
     @GetMapping("/edit/{id}")
     public ModelAndView editContent(@PathVariable Integer id) {
         ModelAndView mav = new ModelAndView();
+
         //編集するタスクを取得
         TaskForm task = taskService.editTask(id);
 
-        //エラーメッセージを設定
 //        if (task == null) {
 //            session.setAttribute("error", "不正なパラメータです");
 //            return new ModelAndView("redirect:/");
 //        }
+
         //編集するタスクをセット
         mav.addObject("formModel", task);
         //画面遷移先を指定

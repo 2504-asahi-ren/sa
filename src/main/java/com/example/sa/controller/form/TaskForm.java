@@ -1,7 +1,9 @@
 package com.example.sa.controller.form;
 
-import jakarta.validation.constraints.*;
-
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,10 +22,23 @@ public class TaskForm {
 
     private int status;
 
-    @NotNull(message = "期限を設定してください")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @FutureOrPresent(message = "無効な日付です")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "期限を設定してください")
     private Date limitDate;
+
+
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    Date date = new Date();
+//
+//    @AssertTrue(message="無効な日付です")
+//    public boolean isDateValid() {
+//        if (limitDate != null && limitDate.before(date) || limitDate.equals(date)) {
+//            return true;
+//        }else {
+//            return false;
+//        }
+//    }
 
     private Date createdDate;
 

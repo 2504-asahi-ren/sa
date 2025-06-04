@@ -54,10 +54,11 @@
                     </div>
                 </form>
             </div>
-            <div class="limit-date"  th:if="${today ge task.limitDate}">
+<!--            <div class="limit-date"  th:if="${#dates.date(today).isBefore(#dates.date(task.limitDate))}">-->
+            <div class="limit-date"  th:if="${#dates.format(today, 'yyyy/MM/dd') >= #dates.format(task.limitDate, 'yyyy/MM/dd')}">
                 タスク期限 : <span th:text="${#dates.format(task.limitDate, 'yyyy/MM/dd')}" style="background-color:pink;"></span>
             </div>
-            <div class="limit-date"  th:if="${today lt task.limitDate}">
+            <div class="limit-date"  th:if="${#dates.format(today, 'yyyy/MM/dd') < #dates.format(task.limitDate, 'yyyy/MM/dd')}">
                 タスク期限 : <span th:text="${#dates.format(task.limitDate, 'yyyy/MM/dd')}" style="background-color:yellow;"></span>
             </div>
             <div class="edit">
