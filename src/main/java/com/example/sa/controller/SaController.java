@@ -14,6 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+
+
 import java.util.*;
 
 @Controller
@@ -35,15 +37,16 @@ public class SaController {
         List<TaskForm> contentData = taskService.findAllTask();
 
         String errorMessage = null;
-        if(session.getAttribute("errorMessage") != null) {
-            errorMessage = session.getAttribute("errorMessage").toString();
+        if(session.getAttribute("error") != null) {
+            //errorMessage = session.getAttribute("errorMessage").toString();
+            errorMessage = session.getAttribute("error").toString();
             session.invalidate();
         }
 
         mav.addObject("tasks", contentData);
         mav.addObject("today", new Date());
         mav.addObject("selectStatus", getSelectStatus());
-        mav.addObject("errorMessage", errorMessage);
+        mav.addObject("error", errorMessage);
         mav.setViewName("/top");
 
         return mav;
@@ -74,35 +77,6 @@ public class SaController {
     }
 
     /*
-     * タスク編集画面表示処理
-     */
-    @GetMapping("/edit/{id}")
-    public ModelAndView editContent(@PathVariable Integer id) {
-        ModelAndView mav = new ModelAndView();
-        //エラーメッセージを設定
-        String editId = String.valueOf(id);
-        if (StringUtils.isBlank(editId) || editId.matches("^[^0-9]+$")) {
-            session.setAttribute("errorMessage", "不正なパラメータです");
-            return new ModelAndView("redirect:/");
-        }
-
-        //編集するタスクを取得
-        TaskForm task = taskService.editTask(id);
-
-        //エラーメッセージを設定
-        if (task == null) {
-            session.setAttribute("errorMessage", "不正なパラメータです");
-            return new ModelAndView("redirect:/");
-        }
-        //編集するタスクをセット
-        mav.addObject("formModel", task);
-        //画面遷移先を指定
-        mav.setViewName("/edit");
-
-        return mav;
-    }
-
-    /*
      * 新規投稿処理
      */
     @PostMapping("/add")
@@ -112,6 +86,28 @@ public class SaController {
         taskService.saveTask(taskForm);
         // rootへリダイレクト
         return new ModelAndView("redirect:/");
+    }
+
+    /*
+     * タスク編集画面表示処理
+     */
+    @GetMapping("/edit/{id}")
+    public ModelAndView editContent(@PathVariable Integer id) {
+        ModelAndView mav = new ModelAndView();
+        //編集するタスクを取得
+        TaskForm task = taskService.editTask(id);
+
+        //エラーメッセージを設定
+//        if (task == null) {
+//            session.setAttribute("error", "不正なパラメータです");
+//            return new ModelAndView("redirect:/");
+//        }
+        //編集するタスクをセット
+        mav.addObject("formModel", task);
+        //画面遷移先を指定
+        mav.setViewName("/edit");
+
+        return mav;
     }
 
     /*
@@ -141,6 +137,16 @@ public class SaController {
         // 投稿をテーブルに格納
         taskService.deleteTask(id);
         // rootへリダイレクト
+        return new ModelAndView("redirect:/");
+    }
+
+    /*
+     * ステータス変更処理
+     */
+    @PutMapping("/change/{id}")
+    public ModelAndView changeStatus(@PathVariable Integer id,
+                                     @RequestParam("status") Integer status) {
+        taskService.changeStatus(id, status);
         return new ModelAndView("redirect:/");
     }
 }

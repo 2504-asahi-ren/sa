@@ -1,8 +1,6 @@
 package com.example.sa.controller.form;
 
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +20,7 @@ public class TaskForm {
 
     private int status;
 
-    @NotBlank(message = "期限を設定してください")
+    @NotNull(message = "期限を設定してください")
     @FutureOrPresent(message = "無効な日付です")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date limitDate;
