@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -39,9 +40,12 @@ public class SaController {
             errorMessage = session.getAttribute("errorMessage").toString();
             session.invalidate();
         }
+        Date date = new Date();
+        Date date1 = new Date();
 
         mav.addObject("tasks", contentData);
-        mav.addObject("today", new Date());
+        mav.addObject("today", date);
+        mav.addObject("today1", date1);
         mav.addObject("selectStatus", getSelectStatus());
         mav.addObject("errorMessage", errorMessage);
         mav.setViewName("/top");
@@ -72,6 +76,21 @@ public class SaController {
         mav.addObject("taskForm", taskForm);
         return mav;
     }
+    /*
+     * タスク追加処理
+     */
+    @PostMapping("/add")
+    public ModelAndView addContent(@ModelAttribute("taskForm") @Validated TaskForm taskForm, BindingResult result) {
+        ModelAndView mav = new ModelAndView();
+        if (result.hasErrors()) {
+            mav.setViewName("/new");
+        }else {
+            // タスクをテーブルに格納
+            taskService.saveTask(taskForm);
+            return new ModelAndView("redirect:/");
+        }
+        return mav;
+    }
 
     /*
      * タスク編集画面表示処理
@@ -100,18 +119,6 @@ public class SaController {
         mav.setViewName("/edit");
 
         return mav;
-    }
-
-    /*
-     * 新規投稿処理
-     */
-    @PostMapping("/add")
-    public ModelAndView addContent(@ModelAttribute("taskForm") TaskForm taskForm) {
-        // 投稿をテーブルに格納
-
-        taskService.saveTask(taskForm);
-        // rootへリダイレクト
-        return new ModelAndView("redirect:/");
     }
 
     /*
