@@ -3,6 +3,8 @@ package com.example.sa.repository.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -29,8 +31,12 @@ public class Task {
     private Date limitDate;
 
     @Column(name = "created_date",insertable = false,updatable = false)
-    private Date CreatedDate;
+    @CreatedDate //更新日時
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
 
     @Column(name = "updated_date",insertable = false,updatable = false)
-    private Date UpdatedDate;
+    @LastModifiedDate //最終更新日時
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
 }

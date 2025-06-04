@@ -9,8 +9,8 @@
         <h1>TODOリスト</h1>
     </div>
     <div class="main-contents">
-        <div class="errorMessage" th:if="${errorMessage} != null">
-            <span th:text="${errorMessage}"></span>
+        <div class="errorMessage" th:if="${error} != null">
+            <span th:text="${error}"></span>
         </div>
         <label>
             本日の日付：<span th:text="${#dates.format(today,'yyyy/MM/dd')}"></span>
@@ -21,9 +21,9 @@
         <div class="narrow-down">
             <form action="/">
                 <label>
-                    期限 : <input type="date" value="${start}">～<input type="date" value="${end}">
+                    期限 : <input type="date" name="start">～<input type="date" name="end">
                     ステータス :
-                    <select class="dropdown">
+                    <select class="dropdown" name="status">
                         <option th:each="item : ${selectStatus}" th:text="${item.value}"></option>
                     </select>
                     タスク内容 : <input type="text" name="content">
@@ -36,18 +36,20 @@
                 タスク内容 : <span th:text="${task.content}"></span>
             </div>
             <div class="status">
-                <label>ステータス
-                    <select class="dropdown">
-                        <option th:each="item : ${selectStatus}"
-                                th:value="${task.status}"
-                                th:text="${item.value}"
-                                th:selected="${item.key == task.status}">
-                        </option>
-                    </select>
-                </label>
-            </div>
-            <div class="change-status">
-                <input type="button" value="変更">
+                <form th:action="@{/change/{id}(id=${task.id})}" th:method="put">
+                    <label>ステータス :
+                        <select class="dropdown" name="status">
+                            <option th:each="item : ${selectStatus}"
+                                    th:value="${item.key}"
+                                    th:text="${item.value}"
+                                    th:selected="${item.key == task.status}">
+                            </option>
+                        </select>
+                    </label>
+                    <div class="change-status">
+                        <input type="submit" value="変更">
+                    </div>
+                </form>
             </div>
 <!--            <div class="limit-date"  th:if="${#dates.date(today).isBefore(#dates.date(task.limitDate))}">-->
             <div class="limit-date"  th:if="${#dates.format(today, 'yyyy/MM/dd') >= #dates.format(task.limitDate, 'yyyy/MM/dd')}">
@@ -63,7 +65,7 @@
             </div>
             <div class="delete">
                 <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
-                    <input type="submit" value="削除">
+                    <input class="delete-action" type="submit" value="削除">
                 </form>
             </div>
         </div>

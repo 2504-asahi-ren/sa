@@ -46,6 +46,9 @@ public class TaskService {
         return tasks;
     }
 
+    /*
+     * 編集内容を取得
+     */
     public TaskForm editTask(Integer id){
         List<Task> results = new ArrayList<>();
         results.add((Task)taskRepository.findById(id).orElse(null));
@@ -53,6 +56,9 @@ public class TaskService {
         return tasks.get(0);
     }
 
+    /*
+     * 登録・編集処理
+     */
     public void saveTask(TaskForm reqTask) {
         Task saveTask = setTaskEntity(reqTask);
         taskRepository.save(saveTask);
@@ -65,6 +71,7 @@ public class TaskService {
         Task task = new Task();
         task.setId(reqTask.getId());
         task.setContent(reqTask.getContent());
+        task.setStatus(reqTask.getStatus());
         task.setLimitDate(reqTask.getLimitDate());
         return task;
     }
@@ -84,4 +91,12 @@ public class TaskService {
         task.setId(id);
         return task;
     }
+
+    /*
+     * ステータス更新
+     */
+    public void changeStatus(Integer id, Integer status) {
+        taskRepository.updateStatusById(id, status);
+    }
+
 }

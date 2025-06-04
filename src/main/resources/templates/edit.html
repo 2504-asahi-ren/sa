@@ -18,6 +18,7 @@
                 <label>タスク内容</label><br/>
                 <textarea class="task-box" th:field="*{content}" size="20" maxlength="200"></textarea><br/>
                 <input type="date" th:field="*{limitDate}"><br/>
+                <input type="hidden" th:field="*{status}">
                 <input type="submit" value="編集">
             </div>
         </form>

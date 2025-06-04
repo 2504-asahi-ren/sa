@@ -2,20 +2,18 @@ package com.example.sa.controller;
 
 import com.example.sa.controller.form.TaskForm;
 import com.example.sa.service.TaskService;
-import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SaController {
@@ -36,18 +34,17 @@ public class SaController {
         List<TaskForm> contentData = taskService.findAllTask();
 
         String errorMessage = null;
-        if(session.getAttribute("errorMessage") != null) {
-            errorMessage = session.getAttribute("errorMessage").toString();
+        if(session.getAttribute("error") != null) {
+            //errorMessage = session.getAttribute("errorMessage").toString();
+            errorMessage = session.getAttribute("error").toString();
             session.invalidate();
         }
         Date date = new Date();
-        Date date1 = new Date();
 
         mav.addObject("tasks", contentData);
         mav.addObject("today", date);
-        mav.addObject("today1", date1);
         mav.addObject("selectStatus", getSelectStatus());
-        mav.addObject("errorMessage", errorMessage);
+        mav.addObject("error", errorMessage);
         mav.setViewName("/top");
 
         return mav;
@@ -98,21 +95,15 @@ public class SaController {
     @GetMapping("/edit/{id}")
     public ModelAndView editContent(@PathVariable Integer id) {
         ModelAndView mav = new ModelAndView();
-        //エラーメッセージを設定
-        String editId = String.valueOf(id);
-        if (StringUtils.isBlank(editId) || editId.matches("^[^0-9]+$")) {
-            session.setAttribute("errorMessage", "不正なパラメータです");
-            return new ModelAndView("redirect:/");
-        }
 
         //編集するタスクを取得
         TaskForm task = taskService.editTask(id);
 
-        //エラーメッセージを設定
-        if (task == null) {
-            session.setAttribute("errorMessage", "不正なパラメータです");
-            return new ModelAndView("redirect:/");
-        }
+//        if (task == null) {
+//            session.setAttribute("error", "不正なパラメータです");
+//            return new ModelAndView("redirect:/");
+//        }
+
         //編集するタスクをセット
         mav.addObject("formModel", task);
         //画面遷移先を指定
@@ -148,6 +139,16 @@ public class SaController {
         // 投稿をテーブルに格納
         taskService.deleteTask(id);
         // rootへリダイレクト
+        return new ModelAndView("redirect:/");
+    }
+
+    /*
+     * ステータス変更処理
+     */
+    @PutMapping("/change/{id}")
+    public ModelAndView changeStatus(@PathVariable Integer id,
+                                     @RequestParam("status") Integer status) {
+        taskService.changeStatus(id, status);
         return new ModelAndView("redirect:/");
     }
 }
