@@ -21,10 +21,10 @@ public class GlobalExceptionHandler {
     @Autowired
     HttpSession session;
 
-    @ExceptionHandler({NoResourceFoundException.class, NullPointerException.class})
-    public String handleNotFoundException(Exception e, Model model) {
-        session.setAttribute("error", "不正なパラメータです");
-        return new String("redirect:/");
-    }
+//    @ExceptionHandler({NoResourceFoundException.class, NullPointerException.class})
+//    public String handleNotFoundException(Exception e, Model model) {
+//        session.setAttribute("error", "不正なパラメータです");
+//        return new String("redirect:/");
+//    }
 
 }
