@@ -24,7 +24,7 @@
                     期限 : <input type="date" name="start">～<input type="date" name="end">
                     ステータス :
                     <select class="dropdown" name="status">
-                        <option th:each="item : ${selectStatus}" th:text="${item.value}"></option>
+                        <option th:each="item : ${selectStatus}" th:text="${item.value}" th:value="${item.key}"></option>
                     </select>
                     タスク内容 : <input type="text" name="content">
                     <input type="submit" value="絞込">

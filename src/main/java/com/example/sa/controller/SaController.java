@@ -27,11 +27,12 @@ public class SaController {
      * タスク表示処理
      */
     @GetMapping
-    public ModelAndView top() {
+    public ModelAndView top(@RequestParam(name = "start", defaultValue = "2000-01-01 ") String startDate,
+                            @RequestParam(name = "end", defaultValue = "2100-12-31 ") String endDate,@RequestParam(name = "status",required = false) Integer status,@RequestParam(name = "content",required = false) String content) {
 
         ModelAndView mav = new ModelAndView();
         // タスクを全件取得
-        List<TaskForm> contentData = taskService.findAllTask();
+        List<TaskForm> contentData = taskService.findAllTask(startDate,endDate,status,content);
 
         String errorMessage = null;
         if(session.getAttribute("error") != null) {
