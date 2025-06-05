@@ -1,0 +1,13 @@
+.task-box {
+    margin: 5px 0px;
+	width: 400px;
+	height: 56px;
+}
+
+.errorMessage {
+    color: red;
+}
+
+.today {
+    font-size: 15px;
+}

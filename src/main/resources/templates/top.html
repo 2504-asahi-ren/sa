@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="styleSheet">
     <script src="js/jquery-3.7.1.js"></script>
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="js/dialog.js"></script>
@@ -15,12 +16,18 @@
         <div class="errorMessage" th:if="${error} != null">
             <span th:text="${error}"></span>
         </div>
-        <label>
-            本日の日付：<span th:text="${#dates.format(today,'yyyy/MM/dd')}"></span>
-        </label><br/>
-        <a href="/new">
-            <button class="new-button" type="button">新規タスク</button>
-        </a>
+        <div class="today">
+            <label>
+                本日の日付：<span th:text="${#dates.format(today,'yyyy/MM/dd')}"></span>
+            </label>
+        </div>
+        <br/>
+        <div class="new-button">
+            <a href="/new">
+                <button class="new-button" type="button">新規タスク</button>
+            </a>
+        </div>
+        <br/>
         <div class="narrow-down">
             <form action="/">
                 <label>
@@ -34,6 +41,7 @@
                 </label>
             </form>
         </div>
+        <br/>
         <div class="task-list" th:each="task : ${tasks}">
             <div>
                 タスク内容 : <span th:text="${task.content}"></span>

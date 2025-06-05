@@ -13,8 +13,8 @@ public class TaskForm {
 
     private int id;
 
-//    @NotBlank(message = "タスクを入力してください")
-    @Pattern(regexp = "^(?![\s\u3000]*$).+", message = "タスクを入力してください")
+    @NotBlank(message = "タスクを入力してください")
+    @Pattern(regexp = "^(?!\\u3000+$)[\\s\\S]*$", message = "タスクを入力してください。")
     @Size(max=140, message = "タスクは140文字以内で入力してください")
     private String content;
 

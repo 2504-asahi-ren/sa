@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="styleSheet">
     <title>タスク追加</title>
 </head>
 <body>
@@ -15,9 +16,9 @@
         <p th:errors="*{limitDate}"></p>
         </div>
         <div class="form-area">
-            <label>タスク内容</label>
-            <textarea class="tweet-box" th:field="*{content}" size="20" maxlength="200" /></textarea><br/>
-            <label>タスク期限</label>
+            <label>タスク内容</label><br/>
+            <textarea class="task-box" th:field="*{content}" size="20" maxlength="200" /></textarea><br/>
+            <label>タスク期限</label><br/>
             <input type="datetime-local" th:field="*{limitDate}"><br/>
             <input type="submit" value="追加" />
         </div>
